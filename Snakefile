@@ -13,7 +13,7 @@ for project, setruns in config.items():
             ALLRUNS.add(r)
             RUNPROJECTS[r] = project
 
-localrules: all, clean, sicklereads
+localrules: all, clean, sicklereads, mashdist
 
 ## BEGIN RULES
 rule all:
@@ -71,7 +71,7 @@ rule sketch:
         N='1',
         k=KMERLEN,
     threads:
-        4
+        16
     log:
         "data/log/counts/{project}-{run}.log"
     benchmark:
@@ -170,8 +170,6 @@ rule mash:
         "data/log/mash/{project}_{set}.log",
     threads:
         16
-    priority:
-        10
     shell:
         "(mash dist -p {threads} {input} {input}"
         " > {output.mashdist}"
@@ -183,8 +181,6 @@ rule mashdist:
         "data/mash/{project}/{set}.mashdist",
     output:
         "data/mash/{project}/{set}.dist",
-    priority:
-        10
     run:
         def fname2id(fname):
             fname = path.basename(fname)

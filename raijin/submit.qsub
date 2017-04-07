@@ -1,6 +1,5 @@
 #!/bin/bash
 #PBS -q express
-#PBS -l other=hyperthread
 #PBS -l ncpus=16
 #PBS -l walltime=24:00:00
 #PBS -l mem=31G
@@ -25,7 +24,7 @@ snakemake --unlock
 
 snakemake                                \
     -j 100                               \
-    --local-cores 32                     \
+    --local-cores 16                     \
     --cluster-config raijin/cluster.yaml \
     --js raijin/jobscript.sh             \
     --rerun-incomplete                   \
