@@ -32,7 +32,7 @@ rule sra:
     log:
         "data/log/getrun/{project}-{run}.log"
     shell:
-        "wget -c -O {output}"
+        "wget -nv -c -O {output}"
         "   https://sra-download.ncbi.nlm.nih.gov/srapub/{wildcards.run}"
         " >{log} 2>&1"
 
