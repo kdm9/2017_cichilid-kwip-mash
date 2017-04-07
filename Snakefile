@@ -163,7 +163,6 @@ rule mash:
     input:
         sketch=temp("data/tmp/mashsketch/{project}/{set}_allsketch.msh"),
     output:
-        dist="data/mash/{project}/{set}.dist",
         mashdist="data/mash/{project}/{set}.mashdist",
     benchmark:
         "data/benchmarks/mash/{project}_{set}.tsv",
@@ -175,7 +174,39 @@ rule mash:
         10
     shell:
         "(mash dist -p {threads} {input} {input}"
-        " | tee {output.mashdist}"
+        " > {output.mashdist}"
         " | ./scripts/mash2kwipdist.py /dev/stdin >{output.dist}"
         ") >{log} 2>&1"
 
+
+rule mashdist:
+    input:
+        "data/mash/{project}/{set}.mashdist",
+    output:
+        "data/mash/{project}/{set}.dist",
+    priority:
+        10
+    run:
+        def fname2id(fname):
+            fname = path.basename(fname)
+            exts = [".gz", ".fastq" "_il"]
+            for ext in exts:
+                if fname.endswith(ext):
+                    fname = fname[:-len(ext)]
+            return fname
+
+        dists = defaultdict(dict)
+        with open(input[0]) as fh:
+            for line in fh:
+                dist = line.strip().split('\t')
+                id1 = fname2id(dist[0])
+                id2 = fname2id(dist[1])
+                dist = float(dist[2])
+                dists[id1][id2] = dist
+
+        with open(output[0], 'w') as ofile:
+            ids = [''] + list(sorted(dists.keys()))
+            print(*ids, sep='\t', file=ofile)
+            for id1, row in sorted(dists.items()):
+                rowdists = [it[1] for it in sorted(row.items())]
+                print(id1, *rowdists, sep='\t', file=ofile)
