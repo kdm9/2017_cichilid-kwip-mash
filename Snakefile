@@ -175,7 +175,6 @@ rule mash:
     shell:
         "(mash dist -p {threads} {input} {input}"
         " > {output.mashdist}"
-        " | ./scripts/mash2kwipdist.py /dev/stdin >{output.dist}"
         ") >{log} 2>&1"
 
 
