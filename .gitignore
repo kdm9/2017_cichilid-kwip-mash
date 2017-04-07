@@ -1,0 +1,9 @@
+*.swp
+.snakemake/
+.ipynb_checkpoints/
+data
+.kdmwrappers/
+
+# scratch space for analysing output
+runs
+raijin/log
