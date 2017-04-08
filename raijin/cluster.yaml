@@ -5,7 +5,7 @@ __default__:
   jobfs: 100G
 
 sra:
-  time: '2:00:00'
+  time: '1:00:00'
   queue: copyq
 
 sicklereads:
@@ -26,8 +26,8 @@ kwip_stats:
 
 mashsketch:
   mem: 31G
-  time: '0:30:00'
+  time: '2:00:00'
 
 mash:
   mem: 31G
-  time: '2:00:00'
+  time: '0:30:00'
