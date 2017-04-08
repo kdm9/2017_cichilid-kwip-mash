@@ -182,8 +182,10 @@ rule mashdist:
     output:
         "data/mash/{project}/{set}.dist",
     run:
+        from collections import defaultdict
+        from os.path import basename
         def fname2id(fname):
-            fname = path.basename(fname)
+            fname = basename(fname)
             exts = [".gz", ".fastq" "_il"]
             for ext in exts:
                 if fname.endswith(ext):
